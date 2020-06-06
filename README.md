@@ -7,5 +7,5 @@ a (fairly) mind-intensive problem.
 Also, the code is shit because I'm using Python after a long time (2 years maybe?) so yeah, sucks.
 Actually been a while since I've used any dynamic language, so a lot of bad practices here...
 
-#dependencies
+# dependencies:
 pygame
