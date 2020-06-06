@@ -36,7 +36,7 @@ class Engine:
                         print("can't solve")
 
                 # move the target box via arrow keys
-                # update which row / col of sudoku is selected
+                # update which row / col of sudoku boards is selected
                 # up / down means y-=1 / y+=1 and left / right means x-=1 /x+=1
                 elif event.key == pygame.K_UP:
                     self.current_selection = (self.current_selection[0], self.current_selection[1] - 1)
@@ -87,6 +87,7 @@ class Engine:
             self.handle_input()
             self.update()
             self.render()
+        pygame.quit()
 
     def draw_grid(self, color=(255, 255, 255, 255)):
         # draw vertical lines
@@ -106,8 +107,8 @@ class Engine:
 
 def main():
     # init the engine and run the main loop
-    e = Engine()
-    e.main_loop()
+    engine = Engine()
+    engine.main_loop()
 
 
 if __name__ == '__main__':
