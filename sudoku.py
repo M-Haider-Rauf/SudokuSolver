@@ -92,11 +92,20 @@ def solve_sudoku(board: list):
         if is_possible(board, val, x, y):
             # ...if possible, set the value
             board[y][x] = val
+            # please ignore these, not part of algorithm...
+            solve_sudoku.engine.render(x, y, (0, 255, 0, 255))
+            solve_sudoku.engine.handle_input()
+
+            # continue algorithm..
             # ...recursively call the function again
             if solve_sudoku(board):
                 return True
             board[y][x] = 0
 
+            # ignore...
+            solve_sudoku.engine.render(x, y, (255, 0, 0, 255))
+            solve_sudoku.engine.handle_input()
+            # ---
     # if no value is valid at position, return False, go to previous stack frame..
     # hence triggering backtracking...
     return False
