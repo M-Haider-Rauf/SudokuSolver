@@ -59,7 +59,8 @@ class Engine:
                 elif event.key == pygame.K_RIGHT:
                     self.current_selection = (self.current_selection[0] + 1, self.current_selection[1])
 
-
+                elif event.key == pygame.K_SPACE:
+                    self.grid = [[0 for i in range(9)] for j in range(9)]
 
                 # enter number in grid
                 else:
@@ -94,15 +95,15 @@ class Engine:
     def draw_grid(self, color=(255, 255, 255, 255)):
         # draw vertical lines
         for i in range(1, BOARD_WIDTH // SCALE):
-            if i % 3:
-                pygame.draw.line(self.display, color, (i * SCALE, 0), (i * SCALE, BOARD_HEIGHT))
+            if i % 3:  # for main grid
+                pygame.draw.line(self.display, (127, 127, 127, 255), (i * SCALE, 0), (i * SCALE, BOARD_HEIGHT))
             else:  # for the thick line for sub-grids
                 pygame.draw.line(self.display, color, (i * SCALE, 0), (i * SCALE, BOARD_HEIGHT), 5)
 
         # draw horizontal lines
         for i in range(1, BOARD_HEIGHT // SCALE):
-            if i % 3:
-                pygame.draw.line(self.display, color, (0, i * SCALE), (BOARD_WIDTH, i * SCALE))
+            if i % 3:  # for main grid
+                pygame.draw.line(self.display, (127, 127, 127, 255), (0, i * SCALE), (BOARD_WIDTH, i * SCALE))
             else:  # for the thick line for sub-grids
                 pygame.draw.line(self.display, color, (0, i * SCALE), (BOARD_WIDTH, i * SCALE), 5)
 
