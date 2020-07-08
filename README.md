@@ -11,6 +11,7 @@ Actually been a while since I've used any dynamic language, so a lot of bad prac
 * **Arrow keys** to select cell
 * **Number keys** to enter number in cell
 * **SPACE** to clear grid
+* **ENTER** to start solving sudoku
 
 
 ![img](https://i.ibb.co/cxpQGPP/Screenshot-7.png)
