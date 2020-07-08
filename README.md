@@ -7,5 +7,13 @@ a (fairly) mind-intensive problem.
 Also, the code is shit because I'm using Python after a long time (2 years maybe?) so yeah, sucks.
 Actually been a while since I've used any dynamic language, so a lot of bad practices here...
 
+# Controls
+* **Arrow keys** to select cell
+* **Number keys** to enter number in cell
+* **SPACE** to clear grid
+
+
+![img](https://i.ibb.co/cxpQGPP/Screenshot-7.png)
+
 # dependencies:
 pygame
