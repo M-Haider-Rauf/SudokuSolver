@@ -1,27 +1,44 @@
+"""
+    Sudoku solver
+    Written by Haider Rauf
+    May 28, 2020
+    made for Nagato Yuki
+"""
+
 import pygame
-import math
 from sudoku import *
 
+CELL_SIZE = 55  # the scale of box
+
 # board dimension constants
-BOARD_WIDTH: int = 405
-BOARD_HEIGHT: int = 405
-SCALE = 45  # the scale of box
+BOARD_WIDTH = CELL_SIZE * 9
+BOARD_HEIGHT = CELL_SIZE * 9
 
 
 class Engine:
-    TICK_RATE = 10
+    TICK_RATE = 12
 
     def __init__(self):
         # init pygame stuff
         pygame.init()
         self.display: pygame.Surface = pygame.display.set_mode((BOARD_WIDTH, BOARD_HEIGHT))
-        pygame.display.set_caption("Sudoku Solver by haider_rauf")
-        self.font = pygame.font.SysFont("consolas", SCALE)
+        pygame.display.set_caption("Sudoku Solver by Haider Rauf")
+        self.font = pygame.font.SysFont("consolas", CELL_SIZE)
         self.clock = pygame.time.Clock()
 
         self.running = True  # game running status
         self.current_selection = (0, 0)  # currently highlighted box
-        self.grid = [[0 for i in range(9)] for j in range(9)]  # init the grid
+        self.grid = [
+            [1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 2, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 3, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 4, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 5, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 6, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 7, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 8, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 9]
+        ]  # init the grid
 
     # helper method for just checking key status since the original method is a bit clunky
     @staticmethod
@@ -41,23 +58,11 @@ class Engine:
                 if event.key == pygame.K_RETURN:
                     # first check if the sudoku is solvable...
                     if can_solve(self.grid):
-                        self.current_selection = (-2, -2)
+                        self.current_selection = (9, 9)
                         solve_sudoku(self.grid)
                         print("solved!")
                     else:
                         print("can't solve")
-
-                # move the target box via arrow keys
-                # update which row / col of sudoku boards is selected
-                # up / down means y-=1 / y+=1 and left / right means x-=1 /x+=1
-                elif event.key == pygame.K_UP:
-                    self.current_selection = (self.current_selection[0], self.current_selection[1] - 1)
-                elif event.key == pygame.K_DOWN:
-                    self.current_selection = (self.current_selection[0], self.current_selection[1] + 1)
-                elif event.key == pygame.K_LEFT:
-                    self.current_selection = (self.current_selection[0] - 1, self.current_selection[1])
-                elif event.key == pygame.K_RIGHT:
-                    self.current_selection = (self.current_selection[0] + 1, self.current_selection[1])
 
                 elif event.key == pygame.K_SPACE:
                     self.grid = [[0 for i in range(9)] for j in range(9)]
@@ -69,6 +74,12 @@ class Engine:
                         if Engine.is_key_pressed(key):  # if any key number key is pressed...
                             self.grid[y][x] = key - pygame.K_0  # calculate the grid value
                             break
+
+        if pygame.mouse.get_pressed()[0]:
+            (x, y) = pygame.mouse.get_pos()
+            x //= CELL_SIZE
+            y //= CELL_SIZE
+            self.current_selection = (x, y)
 
     def update(self):
         # logic so that the selection is warped
@@ -94,34 +105,34 @@ class Engine:
 
     def draw_grid(self, color=(255, 255, 255, 255)):
         # draw vertical lines
-        for i in range(1, BOARD_WIDTH // SCALE):
+        for i in range(1, BOARD_WIDTH // CELL_SIZE):
             if i % 3:  # for main grid
-                pygame.draw.line(self.display, (127, 127, 127, 255), (i * SCALE, 0), (i * SCALE, BOARD_HEIGHT))
+                pygame.draw.line(self.display, (127, 127, 127, 255), (i * CELL_SIZE, 0), (i * CELL_SIZE, BOARD_HEIGHT))
             else:  # for the thick line for sub-grids
-                pygame.draw.line(self.display, color, (i * SCALE, 0), (i * SCALE, BOARD_HEIGHT), 5)
+                pygame.draw.line(self.display, color, (i * CELL_SIZE, 0), (i * CELL_SIZE, BOARD_HEIGHT), 5)
 
         # draw horizontal lines
-        for i in range(1, BOARD_HEIGHT // SCALE):
+        for i in range(1, BOARD_HEIGHT // CELL_SIZE):
             if i % 3:  # for main grid
-                pygame.draw.line(self.display, (127, 127, 127, 255), (0, i * SCALE), (BOARD_WIDTH, i * SCALE))
+                pygame.draw.line(self.display, (127, 127, 127, 255), (0, i * CELL_SIZE), (BOARD_WIDTH, i * CELL_SIZE))
             else:  # for the thick line for sub-grids
-                pygame.draw.line(self.display, color, (0, i * SCALE), (BOARD_WIDTH, i * SCALE), 5)
+                pygame.draw.line(self.display, color, (0, i * CELL_SIZE), (BOARD_WIDTH, i * CELL_SIZE), 5)
 
     def draw_numbers(self, x=None, y=None, color=None):
-        for i in range(BOARD_HEIGHT // SCALE):
-            for j in range(BOARD_WIDTH // SCALE):
+        for i in range(BOARD_HEIGHT // CELL_SIZE):
+            for j in range(BOARD_WIDTH // CELL_SIZE):
                 # if current cell isn't empty...
                 if self.grid[i][j]:  # draw number here
                     text_surf = self.font.render(str(self.grid[i][j]), True, (255, 255, 255, 255))
-                    self.display.blit(text_surf, (j * SCALE + 7, i * SCALE + 0))
+                    self.display.blit(text_surf, (j * CELL_SIZE + 14, i * CELL_SIZE + 4))
                 # if current cell is selected, draw red box around it...
                 if (i, j) == self.current_selection:
-                    self.draw_frame(i, j, (255, 0, 0, 255))
+                    self.draw_frame(i, j, (0, 0, 255, 255))
                 if x is not None and y is not None and color is not None:
                     self.draw_frame(x, y, color)
 
     def draw_frame(self, x, y, color):
-        pygame.draw.rect(self.display, color, (x * SCALE, y * SCALE, SCALE, SCALE), 3)
+        pygame.draw.rect(self.display, color, (x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE), 3)
 
 
 def main():
