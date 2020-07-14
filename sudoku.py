@@ -39,9 +39,9 @@ def can_solve(board: list):
                 board[y][x] = val  # restore the cell's value
 
                 if not result:  # if that value would've been illegal, return fase
-                    return False
+                    return (x, y)
 
-    return True
+    return None
 
 
 # check if putting val at (x, y) cell is possible
@@ -70,12 +70,6 @@ def is_possible(board: list, val: int, x: int, y: int):
     return True
 
 
-# Ok, this is the main sudoku solving algorithm
-# It's a well-known technique known as Backtracking, you can easily find
-# explanations about this on the internet, way better than I can explain.
-# So I'm not gonna go into theory, but I STRONGLY suggest you look into it,
-# it's a good way to see an actual practical use of recursion instead
-# of some some factorial bullshit (who the hell uses that irl?)
 def solve_sudoku(board: list):
     # find current empty position...
     pos = find_empty_cell(board)

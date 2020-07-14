@@ -2,7 +2,7 @@
     Sudoku solver
     Written by Haider Rauf
     May 28, 2020
-    made for Nagato Yuki
+    Nagato Yuki would love this?
 """
 
 import pygame
@@ -16,7 +16,7 @@ BOARD_HEIGHT = CELL_SIZE * 9
 
 
 class Engine:
-    TICK_RATE = 12
+    TICK_RATE = 12  # higher means slower screen update
 
     def __init__(self):
         # init pygame stuff
@@ -42,8 +42,7 @@ class Engine:
 
     # helper method for just checking key status since the original method is a bit clunky
     @staticmethod
-    def is_key_pressed(
-            key: int):  # helper method for just checking key status since the original method is a bit clunky
+    def is_key_pressed(key: int):  # helper method for just checking key status since the original method is clunky
         if pygame.key.get_pressed()[key]:
             return True
         else:
@@ -57,12 +56,11 @@ class Engine:
                 # pressing ENTER solves the sudoku
                 if event.key == pygame.K_RETURN:
                     # first check if the sudoku is solvable...
-                    if can_solve(self.grid):
-                        self.current_selection = (9, 9)
+                    solve = can_solve(self.grid)
+                    if solve is None:
                         solve_sudoku(self.grid)
-                        print("solved!")
                     else:
-                        print("can't solve")
+                        self.current_selection = solve
 
                 elif event.key == pygame.K_SPACE:
                     self.grid = [[0 for i in range(9)] for j in range(9)]
